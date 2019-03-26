@@ -13,11 +13,7 @@ public:
         }
     }
     vector<vector<int>> permute(vector<int>& nums) {
-        for(int i=0;i<nums.size();i++){
-            swap(nums[0],nums[i]);
-            per(nums,1);
-            swap(nums[0],nums[i]);
-        }
+        per(nums,0);
         return v;
     }
 };
