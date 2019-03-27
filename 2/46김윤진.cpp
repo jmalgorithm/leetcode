@@ -26,38 +26,37 @@ Output:
 */
 
 vector<vector<int>> permute(vector<int>& nums) {
-	
+	vector<int> v;
 	vector<vector<int>> result;
-	
-	sort(nums.begin(),nums.end());	//sort(시작주소, 끝주소):오른차순 정렬
-	do {
-		result.push_back(nums);
-	} while (next_permutation(nums.begin(), nums.end()));
-	//next_permutation(시작주소, 끝주소)- 다음 순열있으면 true반환한 뒤 다음순열을 구하고, 없으면 false반환
-	
+	queue<int> q;
+
+	for (int i = 0; i<nums.size(); i++)
+		q.push(nums[i]);
+
+	recursion(q, v, result);
+
 	return result;
 }
 
-int main(void)
-{
-	vector<int> nums;
-	nums.push_back(1);
-	nums.push_back(2);
-	nums.push_back(3);
+void recursion(queue<int>& q, vector<int>& v, vector<vector<int>>& result) {
 
-	vector<vector<int>> result = permute(nums);
+	int size = q.size();
 
-	int size = result.size();
-
-	for (int i = 0; i < size; i++)
+	if (q.empty())
+		result.push_back(v);
+	else
 	{
-		for (int j = 0; j < result[i].size(); j++)
+		for (int i = 0; i<size; i++)
 		{
-			cout << result[i][j];
-		}
-		cout << endl;
-	}
+			int temp = q.front();
+			v.push_back(temp);
+			q.pop();
 
-	for (;;);
-	return 0;
+			recursion(q, v, result);
+
+			q.push(temp);
+			v.pop_back(); //벡터의 맨 마지막 값 삭제
+
+		}
+	}
 }
