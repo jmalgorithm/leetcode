@@ -1,0 +1,48 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+int n;
+double x[1000], y[1000];
+double dist[1000];
+int visited[1000];
+int main() {
+    int test_case, n;
+    double e;
+    cin >> test_case;
+    for (int test = 1; test <= test_case; test++) {
+        cin >> n;
+        for (int i = 0; i < n; i++)
+            cin >> x[i];
+        for (int i = 0; i < n; i++)
+            cin >> y[i];
+        for (int i = 0; i < n; i++) {
+            visited[i] = 0;
+            dist[i] = 1000000000001;
+        }
+        cin >> e;
+        dist[0] = 0;
+        double total = 0;
+        for (int i = 0; i < n; i++) {
+            double min = 1000000000001;
+            int index;
+            for (int j = 0; j < n; j++) {
+                if (visited[j] == 0 && dist[j] < min) {
+                    min = dist[j];
+                    index = j;
+                }
+            }
+            visited[index] = 1;
+            total += min;
+            for (int j = 0; j < n; j++) {
+                if (visited[j] == 0) {
+                    min = (x[index] - x[j])*(x[index] - x[j]) + (y[index] - y[j])*(y[index] - y[j]);
+                    if (dist[j] > min)
+                        dist[j] = min;
+                }
+            }
+        }
+        printf("#%d %.0lld\n", test, lroundl(total*e));
+    }
+    return 0;
+}
