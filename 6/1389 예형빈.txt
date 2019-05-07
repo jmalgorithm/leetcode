@@ -1,0 +1,61 @@
+#include <iostream>
+#include<vector>
+#include<algorithm>
+#include<cmath>
+using namespace std;
+int arr[101][101];
+vector<int> anw;
+int main() {
+	int n, m, a, b;
+	cin >> n >> m;
+	for (int i = 1; i <= m; i++) {
+		cin >> a >> b;
+		arr[a][b] = 1;
+		arr[b][a] = 1;
+	}
+	int changed = 1;
+	while (changed == 1) {
+		changed = 0;
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
+				if (i == j)
+					continue;
+				for (int q = 1; q <= n; q++) {
+					if (q == i || q == j)
+						continue;
+					//printf("%d %d %d\n", i, j, q);
+					if (arr[i][q] != 0 && arr[q][j] != 0)
+					{
+			
+						if (arr[i][j] != 0) {
+							if (arr[i][j] > arr[i][q] + arr[q][j]) {
+								arr[i][j] = arr[i][q] + arr[q][j];
+								changed = 1;
+							}
+						}
+						else {
+							arr[i][j] = arr[i][q] + arr[q][j];
+							changed = 1;
+						}
+					}
+				}
+			}
+		}
+	}
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			arr[i][0] += arr[i][j];
+			//printf("%d ", arr[i][j]);
+		}//printf("\n");
+	}
+	int min = 101;
+	int minIndex = 0;
+	for (int i = 1; i <= n; i++) {
+		if (min > arr[i][0]) {
+			min = arr[i][0];
+			minIndex = i;
+		}
+	}
+	cout << minIndex;
+	return 0;
+}

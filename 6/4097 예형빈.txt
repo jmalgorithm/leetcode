@@ -1,0 +1,25 @@
+#include <iostream>
+#include<vector>
+#include<algorithm>
+#include<cmath>
+using namespace std;
+int num[250000];
+vector<int> anw;
+int main() {
+	int n, l = 0, r = 0, total = 0;
+	cin >> n;
+	while (n != 0) {
+		for (int i = 0; i < n; i++) {
+			cin >> num[i];
+			num[i] = max(num[i], num[i - 1] + num[i]);
+		}
+		long long ma = num[0];
+		for (int i = 0; i < n; i++) {
+			if (ma < num[i])
+				ma = num[i];
+		}
+		cout << ma << "\n";
+		cin >> n;
+	}
+	return 0;
+}

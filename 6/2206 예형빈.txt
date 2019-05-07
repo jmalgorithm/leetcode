@@ -1,0 +1,55 @@
+#include <iostream>
+#include<vector>
+#include<algorithm>
+#include<cmath>
+using namespace std;
+int arr[1001][1001];
+int dirX[4] = { 1,-1,0,0 }, dirY[4] = { 0,0,-1,1 }, dir[4] = { 1,0,3,2 };
+int anw = 1000001, changed = 0,n,m;
+int main() {
+	int possible(int, int);
+	void find(int, int, int, int);
+	cin >> n >> m;
+	for (int i = 0; i < n; i++) 
+		for (int j = 0; j < m; j++) 
+			scanf_s("%1d", &arr[i][j]);
+		
+	find(0, 0, 0, -1);
+	if (anw == 1000001)
+		anw = -1;
+	cout << anw;
+	return 0;
+}
+
+int possible(int x, int y) {
+	if (x<0 || y<0 || x>=n || y>=m)
+		return 0;
+	else {
+		if (arr[x][y] == 0)
+			return 1;
+		else
+			if (changed == 0)
+			{
+				changed = 1;
+				return 2;
+			}
+	}
+	return 0;
+}
+
+void find(int x, int y, int count, int direction) {
+	//cout << x << y << changed << "\n";
+	if (x == n-1 && y == m-1)
+		anw = min(anw, count);
+	for (int i = 0; i < 4; i++) {
+		if (i != direction) {
+			int pos = possible(x + dirX[i], y + dirY[i]);
+			if (pos == 1)
+				find(x + dirX[i], y + dirY[i], count + 1, dir[i]);
+			else if (pos == 2) {
+				find(x + dirX[i], y + dirY[i], count + 1, dir[i]);
+				changed = 0;
+			}
+		}
+	}
+}
