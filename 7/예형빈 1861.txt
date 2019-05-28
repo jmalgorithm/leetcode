@@ -1,0 +1,84 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<queue>
+#include<memory.h>
+using namespace std;
+int n, m, h, maxx = 0;
+int arr[1001][1001];
+bool visited[1001][1001];
+int d[4][2] = { { -1,0 },{ 1,0 },{ 0,-1 },{ 0,1 } };
+vector<int> anw;
+int main() {
+	bool isRange(int, int);
+	int bfs(int, int, int);
+	int test_case;
+	cin >> test_case;
+	for (int test = 1; test <= test_case; test++) {
+		cin >> n;
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < n; j++)
+				cin >> arr[i][j];
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < n; j++) {
+				if (!visited[i][j]) {
+					int num = bfs(i, j, 1);
+					//cout << num << "\n";
+					if (maxx < num) {
+						anw.clear();
+						anw.push_back(arr[i][j]);
+						maxx = num;
+					}
+					else if (maxx == num)
+						anw.push_back(arr[i][j]);
+				}
+			}
+		cout << "#" << test << " ";
+		sort(anw.begin(), anw.end());
+		cout << anw[0] << " " << maxx << "\n";
+		maxx = 0;
+		anw.clear();
+		memset(visited, false, sizeof(visited));
+	}
+
+	return 0;
+}
+
+bool isRange(int x, int y) {
+	if (x >= 0 && x < n && y >= 0 && y < n)
+		return true;
+	return false;
+}
+
+int bfs(int x, int y, int height) {
+	queue<pair<pair<int, int>, int>> q;
+	q.push(make_pair(make_pair(x, y), height));
+	visited[x][y] = true;
+	int highest = height;
+
+	while (!q.empty()) {
+		x = q.front().first.first;
+		y = q.front().first.second;
+		height = q.front().second;
+		//cout << x << y << height << "\n";
+
+		if (highest < height)
+			highest = height;
+		q.pop();
+		for (int i = 0; i < 4; i++) {
+			int dx = x + d[i][0];
+			int dy = y + d[i][1];
+
+			if (!isRange(dx, dy))
+				continue;
+
+			if (arr[x][y] + 1 == arr[dx][dy]) {
+				q.push(make_pair(make_pair(dx, dy), height + 1));
+				visited[dx][dy] = true;
+			}
+
+		}
+	}
+	return highest;
+}
+

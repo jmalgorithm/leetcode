@@ -1,0 +1,49 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<queue>
+#include<memory.h>
+#include<string.h>
+#include<stack>
+using namespace std;
+vector<int> s;
+int main() {
+	char msg[100001];
+	int test_case;
+	cin >> test_case;
+	for (int test = 1; test <= test_case; test++) {
+		cin >> msg;
+		int total = 0;
+		int length = strlen(msg);
+		int laserIndex = -1;
+		for (int i = 0; i < length - 1; i++) {
+			if (msg[i] == '(') {
+				if (msg[i + 1] == ')') {
+					// laser
+					int tempCount = 0;
+					//cout << s.size() << "\n";
+					for (int q = s.size()-1; q >= 0; q--) {
+						//cout << "temp" << tempCount << "\n";
+						if (s[q] > laserIndex)
+							tempCount++;
+						if (s[q] < laserIndex)
+							break;
+					}
+					i++;
+					total += s.size() + tempCount;
+					laserIndex = i;
+				}
+				else {
+					s.push_back(i);
+				}
+			}
+			else { // ')'로 끝 - 나무막대기
+				s.pop_back();
+			}
+		}
+		cout << "#"<<test<< " " << total << "\n";
+		s.clear();
+	}
+	return 0;
+}
+
